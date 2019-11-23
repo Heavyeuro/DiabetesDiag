@@ -9,11 +9,13 @@ def readCSV(name):
 def describeData(CSVfliveName):
     pd.set_option('display.max_columns', 10)
     obj_to_describe = readCSV(CSVfliveName)
-    print(obj_to_describe.describe())
+    obj_to_describe.describe()
 
 
-def detectNullVal(CSVfliveName):
-    obj_to_describe = readCSV(CSVfliveName)
+def detectNullVal(obj_to_describe,exclude_col=[]):
+    # obj_to_describe = readCSV(CSVfliveName)
     # missing values by columns
+    obj_to_describe=obj_to_describe.drop(exclude_col, axis=1)
     missing_val_count_by_column = (obj_to_describe.isin([0]).sum())
-    print(missing_val_count_by_column)
+    # print(missing_val_count_by_column)
+    return (missing_val_count_by_column)

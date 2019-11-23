@@ -10,10 +10,15 @@ def convertXLSToCSV(name_CSV, name_xls):
 
 
 def refactoringCol(name_CSV):
-    data_csv = pd.read_csv(name_CSV, )
-    for i in range(0, len(data_csv['Diabetes'])):
-        if data_csv['Diabetes'][i] == "Healthy":
-            data_csv.at[i, 'Diabetes'] = True
-        else:
-            data_csv.at[i, 'Diabetes'] = False
+    data_csv = pd.read_csv(name_CSV, encoding='utf-8')
+    replace(data_csv,['Diabetes'], 'Healthy', True)
+    replace(data_csv, ['Diabetes'], 'Sick', False)
+
     data_csv.to_csv(name_CSV, encoding='utf-8', index=None)
+
+
+def replace(data_csv,listColumn, oldValue, newValue):
+    for col in listColumn:#[0]
+         data_csv[col]=data_csv[col].replace(oldValue, newValue)
+
+    return data_csv

@@ -9,6 +9,6 @@ if __name__ == '__main__':
     ca.convertXLSToCSV(nameCSV, nameXLS)
 
     da.describeData(nameCSV)
-    da.detectNullVal(nameCSV)
+    #da.detectNullVal(nameCSV)
 
     lm.buildMLModel(nameCSV)
