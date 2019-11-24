@@ -13,9 +13,7 @@ def describeData(CSVfliveName):
 
 
 def detectNullVal(obj_to_describe,exclude_col=[]):
-    # obj_to_describe = readCSV(CSVfliveName)
     # missing values by columns
     obj_to_describe=obj_to_describe.drop(exclude_col, axis=1)
     missing_val_count_by_column = (obj_to_describe.isin([0]).sum())
-    # print(missing_val_count_by_column)
     return (missing_val_count_by_column)
