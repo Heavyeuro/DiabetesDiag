@@ -1,6 +1,7 @@
 import CoreActions as ca
 import DataAnalysis as da
 import LearningModel as lm
+import PrepareDataset as pds
 
 if __name__ == '__main__':
     nameXLS = 'Diabetes.xls'
@@ -10,5 +11,5 @@ if __name__ == '__main__':
 
     da.describeData(nameCSV)
     #da.detectNullVal(nameCSV)
-
-    lm.buildMLModel(nameCSV)
+    pds.buildMLModel(nameCSV)
+    #lm.buildMLModel(nameCSV)

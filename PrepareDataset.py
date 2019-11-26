@@ -1,23 +1,42 @@
 import pandas as pd
 import DataAnalysis as da
-import  CoreActions as ca
+import CoreActions as ca
 from sklearn.impute import SimpleImputer
-import numpy as np
+from sklearn.model_selection import train_test_split
+from xgboost import XGBRegressor
+from sklearn.metrics import mean_absolute_error
 
-def SimpleImputingData(X_train, X_valid):
+def buildMLModel(nameCSV):
+    X_full = da.readCSV(nameCSV)
 
-    simple_imputer = SimpleImputer(strategy='most_frequent')#most_frequent')
-    imputed_X_train = pd.DataFrame(simple_imputer.fit_transform(X_train))
-    imputed_X_valid = pd.DataFrame(simple_imputer.transform(X_valid))
-    # Imputation removed column names; put them back
-    imputed_X_train.columns = X_train.columns
-    imputed_X_valid.columns = X_valid.columns
+    y = X_full.Diabetes
+    X = X_full.drop(['Diabetes'], axis=1)
+    #X_train, X_valid, y_train, y_valid = train_test_split(X, y, train_size=0.9, test_size=0.1, random_state=1)
+    X_train, X_valid, y_train, y_valid = train_test_split(X, y)
+    # my_model = XGBRegressor()
+    # my_model.fit(X_train, y_train)
 
-    return imputed_X_train,imputed_X_valid
+    my_model = XGBRegressor(n_estimators=1000, learning_rate=0.05, n_jobs=4)
+    my_model.fit(X_train, y_train,
+                 early_stopping_rounds=5,
+                 eval_set=[(X_valid, y_valid)],
+                 verbose=False)
+    predictions = my_model.predict(X_valid)
+    print("Mean Absolute Error: "+str(mean_absolute_error(predictions,y_valid)))
 
-
-
-def null_to_NaN(X,beside_list):
-# replacing 0 to NaN
-    cols_with_mising_val = da.detectNullVal(X, beside_list).index[0]
-    X = ca.replace(X, [cols_with_mising_val], 0, np.nan)
+   #  beside_list = ['Pregnancies']
+   #  ca.null_to_NaN(X, beside_list)
+   #
+   #  my_pipeline = Pipeline(steps=[('preprocessor', SimpleImputer(strategy='most_frequent')),
+   #                                ('model', RandomForestRegressor(n_estimators=450, random_state=0))])
+   #
+   #  # Multiply by -1 since sklearn calculates *negative* MAE
+   #
+   #  X_train, X_valid, y_train, y_valid = train_test_split(X, y, train_size=0.9, test_size=0.1, random_state=1)
+   # # X_train, X_valid=pds.SimpleImputingData(X_train, X_valid)
+   #
+   #  results = {}
+   #  for i in range(1, 10):
+   #      results[25 * i] = get_score(25 * i,  X_train, y_train)
+   #  n_estimators_best = min(results, key=results.get)
+   #  print(get_score(n_estimators_best, X_train, y_train))
