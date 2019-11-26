@@ -40,6 +40,7 @@ def SimpleImputingData(X_train, X_valid):
 
 
 def null_to_NaN(X,beside_list):
-# replacing 0 to NaN
+    # replacing 0 to NaN
     cols_with_mising_val = da.detectNullVal(X, beside_list).index[0]
     X = ca.replace(X, [cols_with_mising_val], 0, np.nan)
+    return X
