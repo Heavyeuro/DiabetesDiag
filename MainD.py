@@ -12,4 +12,5 @@ if __name__ == '__main__':
     da.describeData(nameCSV)
     #da.detectNullVal(nameCSV)
     pds.buildMLModel(nameCSV)
-    #lm.buildMLModel(nameCSV)
+
+    lm.buildMLModel(nameCSV)
